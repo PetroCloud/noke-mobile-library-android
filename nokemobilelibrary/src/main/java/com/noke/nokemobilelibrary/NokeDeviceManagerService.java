@@ -355,44 +355,15 @@ public class NokeDeviceManagerService extends Service {
      */
     public void startScanningForNokeDevices() {
         try {
-            LocationManager lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-            boolean gps_enabled = false;
-            boolean network_enabled = false;
-            try {
-                if (lm != null) {
-                    gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                }
-            } catch (Exception e) {
-                mGlobalNokeListener.onError(null, NokeMobileError.ERROR_GPS_ENABLED, "GPS is not enabled");
-            }
+            boolean location_enabled = isLocationFullyEnabled();
 
-            try {
-                if (lm != null) {
-                    network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-                }
-            } catch (Exception e) {
-                mGlobalNokeListener.onError(null, NokeMobileError.ERROR_NETWORK_ENABLED, "Network is not enabled");
-            }
-
-            int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
-            if (!gps_enabled && !network_enabled) {
+            if (!location_enabled) {
                 mGlobalNokeListener.onError(null, NokeMobileError.ERROR_LOCATION_SERVICES_DISABLED, "Location services are disabled");
-            } else if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                mGlobalNokeListener.onError(null, NokeMobileError.ERROR_LOCATION_SERVICES_DISABLED, "Location services are disabled");
-            } else if (mBluetoothAdapter != null) {
-                if (!mBluetoothAdapter.isEnabled()) {
-                    mGlobalNokeListener.onError(null, NokeMobileError.ERROR_BLUETOOTH_DISABLED, "Bluetooth is disabled");
-                } else {
-                    initiateBackgroundBLEScan();
-                }
             } else {
-                mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-                if (mBluetoothManager != null) {
-                    mBluetoothAdapter = mBluetoothManager.getAdapter();
-                }
-                if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
-                    mGlobalNokeListener.onError(null, NokeMobileError.ERROR_BLUETOOTH_DISABLED, "Bluetooth is disabled");
-                } else {
+                int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
+                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                    mGlobalNokeListener.onError(null, NokeMobileError.ERROR_LOCATION_SERVICES_DISABLED, "Location permissions not granted");
+                } else if (isBluetoothEnabled()) {
                     initiateBackgroundBLEScan();
                 }
             }
@@ -401,6 +372,59 @@ public class NokeDeviceManagerService extends Service {
         }
     }
 
+    public boolean isLocationFullyEnabled() {
+        boolean network_enabled = isLocationNetworkProviderEnabled();
+        boolean gps_enabled = isLocationGpsProviderEnabled();
+        return gps_enabled && network_enabled;
+    }
+
+    public boolean isBluetoothEnabled() {
+        boolean bluetoothInitialized = false;
+        if(mBluetoothManager != null) {
+            mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        }
+        if (mBluetoothManager != null && mBluetoothAdapter == null) {
+            mBluetoothAdapter = mBluetoothManager.getAdapter();
+        }
+        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+            mGlobalNokeListener.onError(null, NokeMobileError.ERROR_BLUETOOTH_DISABLED, "Bluetooth is disabled");
+        } else {
+            bluetoothInitialized = true;
+        }
+        return bluetoothInitialized;
+    }
+
+    /**
+     * Verifies if the GPS provider is enabled
+     */
+    public boolean isLocationGpsProviderEnabled() {
+        LocationManager lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        boolean enabled = false;
+        try {
+            if (lm != null) {
+                enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            }
+        } catch (Exception e) {
+            mGlobalNokeListener.onError(null, NokeMobileError.ERROR_GPS_ENABLED, "GPS is not enabled");
+        }
+        return enabled;
+    }
+
+    /**
+     * Begins scanning for Noke devices that have been added to the device array
+     */
+    public boolean isLocationNetworkProviderEnabled() {
+        LocationManager lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        boolean enabled = false;
+        try {
+            if (lm != null) {
+                enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            }
+        } catch (Exception e) {
+            mGlobalNokeListener.onError(null, NokeMobileError.ERROR_NETWORK_ENABLED, "Network is not enabled");
+        }
+        return enabled;
+    }
 
     boolean scanLoopOn = false;
     boolean scanLoopOff = false;
