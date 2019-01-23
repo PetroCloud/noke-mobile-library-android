@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -196,6 +197,26 @@ public class MainActivity extends AppCompatActivity implements DemoWebClient.Dem
 
         @Override
         public void onBluetoothStatusChanged(int bluetoothStatus) {
+
+        }
+
+        @Override
+        public void onLocationStatusChanged(int locationStatus) {
+
+        }
+
+        @Override
+        public void onLocationChanged(Location position) {
+
+        }
+
+        @Override
+        public void onLocationProviderEnabled() {
+
+        }
+
+        @Override
+        public void onLocationProviderDisabled() {
 
         }
 
