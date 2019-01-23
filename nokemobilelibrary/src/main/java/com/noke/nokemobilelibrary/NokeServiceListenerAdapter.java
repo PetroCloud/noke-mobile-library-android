@@ -1,5 +1,7 @@
 package com.noke.nokemobilelibrary;
 
+import android.location.Location;
+
 /************************************************************************************************************************************************
  * Copyright © 2018 Nokē Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +21,7 @@ package com.noke.nokemobilelibrary;
  */
 
 @SuppressWarnings("unused")
-public class NokeServiceListenerAdapter implements NokeServiceListener{
+public class NokeServiceListenerAdapter implements NokeServiceListener {
 
     @Override
     public void onNokeDiscovered(NokeDevice noke) {
@@ -70,4 +72,25 @@ public class NokeServiceListenerAdapter implements NokeServiceListener{
     public void onError(NokeDevice noke, int error, String message) {
         //empty default implementation
     }
+
+    @Override
+    public void onLocationStatusChanged(int locationStatus) {
+        //empty default implementation
+    }
+
+    @Override
+    public void onLocationChanged(Location position) {
+        //empty default implementation
+    }
+
+    @Override
+    public void onLocationProviderEnabled() {
+        //empty default implementation
+    }
+
+    @Override
+    public void onLocationProviderDisabled() {
+        //empty default implementation
+    }
+
 }

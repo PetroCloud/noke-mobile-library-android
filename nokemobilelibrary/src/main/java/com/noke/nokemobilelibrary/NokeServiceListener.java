@@ -1,5 +1,7 @@
 package com.noke.nokemobilelibrary;
 
+import android.location.Location;
+
 /************************************************************************************************************************************************
  * Copyright © 2018 Nokē Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +20,7 @@ package com.noke.nokemobilelibrary;
  * Listener for handling callbacks from NokeService
  */
 
-public interface NokeServiceListener  {
+public interface NokeServiceListener {
 
     void onNokeDiscovered(NokeDevice noke);
 
@@ -37,6 +39,14 @@ public interface NokeServiceListener  {
     void onDataUploaded(int result, String message);
 
     void onBluetoothStatusChanged(int bluetoothStatus);
+
+    void onLocationStatusChanged(int locationStatus);
+
+    void onLocationChanged(Location position);
+
+    void onLocationProviderEnabled();
+
+    void onLocationProviderDisabled();
 
     void onError(NokeDevice noke, int error, String message);
 
