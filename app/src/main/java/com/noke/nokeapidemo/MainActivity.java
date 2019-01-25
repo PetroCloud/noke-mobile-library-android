@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements DemoWebClient.Dem
         }
 
         @Override
-        public void onLocationChanged(Location position) {
+        public void onLocationChanged(double latitude, double longitude) {
 
         }
 

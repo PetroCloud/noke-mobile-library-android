@@ -79,7 +79,7 @@ public class NokeServiceListenerAdapter implements NokeServiceListener {
     }
 
     @Override
-    public void onLocationChanged(Location position) {
+    public void onLocationChanged(double latitude, double longitude) {
         //empty default implementation
     }
 

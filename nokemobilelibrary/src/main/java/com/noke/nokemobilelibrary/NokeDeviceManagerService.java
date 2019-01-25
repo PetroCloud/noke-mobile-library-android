@@ -345,6 +345,17 @@ public class NokeDeviceManagerService extends Service {
      * @return boolean after initialization
      */
     public boolean initialize() {
+        if (mBluetoothManager == null) {
+            mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+            if (mBluetoothManager == null) {
+                return false;
+            }
+        }
+        mBluetoothAdapter = mBluetoothManager.getAdapter();
+        return mBluetoothAdapter != null;
+    }
+
+    private boolean initializeLocation() {
         if (mLocationManager == null) {
             mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             if (mLocationManager == null) {
@@ -354,7 +365,9 @@ public class NokeDeviceManagerService extends Service {
             // Define a listener that responds to location updates
             mLocationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
-                    mGlobalNokeListener.onLocationChanged(location);
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    mGlobalNokeListener.onLocationChanged(latitude, longitude);
                 }
 
                 public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -375,16 +388,11 @@ public class NokeDeviceManagerService extends Service {
             }
 
             // Register the listener with the Location Manager to receive location updates
-            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
+            // minTime:    minimum time interval between location updates (in milliseconds).
+            // minDistance:    minimum distance between location updates (in meters).
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, mLocationListener);
+            return isLocationGpsProviderEnabled();
         }
-        if (mBluetoothManager == null) {
-            mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-            if (mBluetoothManager == null) {
-                return false;
-            }
-        }
-        mBluetoothAdapter = mBluetoothManager.getAdapter();
-        return mBluetoothAdapter != null;
     }
 
     /**
@@ -416,7 +424,7 @@ public class NokeDeviceManagerService extends Service {
     }
 
     public boolean isBluetoothEnabled() {
-        boolean bluetoothInitialized = false;
+        boolean bluetoothEnabled = false;
         if (mBluetoothManager != null) {
             mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         }
@@ -426,20 +434,19 @@ public class NokeDeviceManagerService extends Service {
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             mGlobalNokeListener.onError(null, NokeMobileError.ERROR_BLUETOOTH_DISABLED, "Bluetooth is disabled");
         } else {
-            bluetoothInitialized = true;
+            bluetoothEnabled = mBluetoothAdapter.isEnabled();
         }
-        return bluetoothInitialized;
+        return bluetoothEnabled;
     }
 
     /**
      * Verifies if the GPS provider is enabled
      */
     public boolean isLocationGpsProviderEnabled() {
-        LocationManager lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean enabled = false;
         try {
-            if (lm != null) {
-                enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if (mLocationManager != null) {
+                enabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             }
         } catch (Exception e) {
             mGlobalNokeListener.onError(null, NokeMobileError.ERROR_GPS_ENABLED, "GPS is not enabled");
