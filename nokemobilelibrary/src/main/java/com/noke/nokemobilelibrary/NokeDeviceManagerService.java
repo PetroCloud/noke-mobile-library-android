@@ -343,6 +343,7 @@ public class NokeDeviceManagerService extends Service {
      * @return boolean after initialization
      */
     public boolean initialize() {
+        initializeLocation();
         if (mBluetoothManager == null) {
             mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
             if (mBluetoothManager == null) {
@@ -392,8 +393,8 @@ public class NokeDeviceManagerService extends Service {
             // minTime:    minimum time interval between location updates (in milliseconds).
             // minDistance:    minimum distance between location updates (in meters).
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, mLocationListener);
-            return isLocationGpsProviderEnabled();
         }
+        return isLocationGpsProviderEnabled();
     }
 
     /**
@@ -459,11 +460,10 @@ public class NokeDeviceManagerService extends Service {
      * Begins scanning for Noke devices that have been added to the device array
      */
     public boolean isLocationNetworkProviderEnabled() {
-        LocationManager lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean enabled = false;
         try {
-            if (lm != null) {
-                enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            if (mLocationManager != null) {
+                enabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             }
         } catch (Exception e) {
             mGlobalNokeListener.onError(null, NokeMobileError.ERROR_NETWORK_ENABLED, "Network is not enabled");
