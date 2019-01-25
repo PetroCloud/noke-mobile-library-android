@@ -233,10 +233,8 @@ public class NokeDeviceManagerService extends Service {
      */
     public void registerNokeListener(NokeServiceListener listener) {
         this.mGlobalNokeListener = listener;
-        if (mBluetoothAdapter != null) {
+        if (mBluetoothAdapter != null && mGlobalNokeListener != null) {
             mGlobalNokeListener.onBluetoothStatusChanged(mBluetoothAdapter.getState());
-        } else {
-            mGlobalNokeListener.onBluetoothStatusChanged(BluetoothAdapter.STATE_OFF);
         }
     }
 
@@ -352,6 +350,9 @@ public class NokeDeviceManagerService extends Service {
             }
         }
         mBluetoothAdapter = mBluetoothManager.getAdapter();
+        if (mBluetoothAdapter != null && mGlobalNokeListener != null) {
+            mGlobalNokeListener.onBluetoothStatusChanged(mBluetoothAdapter.getState());
+        }
         return mBluetoothAdapter != null;
     }
 
