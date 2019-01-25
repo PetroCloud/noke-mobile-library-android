@@ -436,7 +436,7 @@ public class NokeDeviceManagerService extends Service {
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             mGlobalNokeListener.onError(null, NokeMobileError.ERROR_BLUETOOTH_DISABLED, "Bluetooth is disabled");
         } else {
-            bluetoothEnabled = mBluetoothAdapter.isEnabled();
+            bluetoothEnabled = true;
         }
         return bluetoothEnabled;
     }
