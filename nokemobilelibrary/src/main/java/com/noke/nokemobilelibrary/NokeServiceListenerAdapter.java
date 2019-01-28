@@ -1,7 +1,5 @@
 package com.noke.nokemobilelibrary;
 
-import android.location.Location;
-
 /************************************************************************************************************************************************
  * Copyright © 2018 Nokē Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
