@@ -357,6 +357,16 @@ public class NokeDeviceManagerService extends Service {
         return mBluetoothAdapter != null;
     }
 
+    private boolean hasLocationPermissions() {
+        boolean result = true
+        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            mGlobalNokeListener.onError(null, NokeMobileError.ERROR_LOCATION_PERMISSIONS_NEEDED, "Location permissions not granted");
+            result = false;
+        }
+        return result;
+    }
+
     private boolean initializeLocation() {
         if (mLocationManager == null) {
             mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -384,10 +394,8 @@ public class NokeDeviceManagerService extends Service {
                     mGlobalNokeListener.onLocationProviderDisabled();
                 }
             };
-            int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
-            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                mGlobalNokeListener.onError(null, NokeMobileError.ERROR_LOCATION_SERVICES_DISABLED, "Location permissions not granted");
-            }
+
+            hasLocationPermissions();
 
             // Register the listener with the Location Manager to receive location updates
             // minTime:    minimum time interval between location updates (in milliseconds).
@@ -407,10 +415,7 @@ public class NokeDeviceManagerService extends Service {
             if (!location_enabled) {
                 mGlobalNokeListener.onError(null, NokeMobileError.ERROR_LOCATION_SERVICES_DISABLED, "Location services are disabled");
             } else {
-                int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
-                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                    mGlobalNokeListener.onError(null, NokeMobileError.ERROR_LOCATION_SERVICES_DISABLED, "Location permissions not granted");
-                } else if (isBluetoothEnabled()) {
+                if (hasLocationPermissions() && isBluetoothEnabled()) {
                     initiateBackgroundBLEScan();
                 }
             }
