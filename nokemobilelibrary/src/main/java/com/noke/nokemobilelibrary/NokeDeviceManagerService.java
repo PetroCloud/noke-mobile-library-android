@@ -358,7 +358,7 @@ public class NokeDeviceManagerService extends Service {
     }
 
     private boolean hasLocationPermissions() {
-        boolean result = true
+        boolean result = true;
         int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             mGlobalNokeListener.onError(null, NokeMobileError.ERROR_LOCATION_PERMISSIONS_NEEDED, "Location permissions not granted");
