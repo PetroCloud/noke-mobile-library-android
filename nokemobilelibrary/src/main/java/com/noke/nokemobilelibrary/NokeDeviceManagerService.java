@@ -427,6 +427,7 @@ public class NokeDeviceManagerService extends Service {
     public boolean isLocationFullyEnabled() {
         boolean network_enabled = isLocationNetworkProviderEnabled();
         boolean gps_enabled = isLocationGpsProviderEnabled();
+        Log.d(TAG, "isLocationFullyEnabled: " + network_enabled + ' ' + gps_enabled);
         return gps_enabled && network_enabled;
     }
 
