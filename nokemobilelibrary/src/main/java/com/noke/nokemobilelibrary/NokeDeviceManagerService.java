@@ -23,6 +23,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Build;
@@ -405,7 +406,7 @@ public class NokeDeviceManagerService extends Service {
             if (!gps_enabled && !network_enabled) {
                 mGlobalNokeListener.onError(null, NokeMobileError.ERROR_LOCATION_SERVICES_DISABLED, "Location services are disabled");
             } else if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                mGlobalNokeListener.onError(null, NokeMobileError.ERROR_LOCATION_SERVICES_DISABLED, "Location services are disabled");
+                mGlobalNokeListener.onError(null, NokeMobileError.ERROR_LOCATION_PERMISSIONS_NEEDED, "Location services permission needed");
             } else if (mBluetoothAdapter != null) {
                 if (!mBluetoothAdapter.isEnabled()) {
                     mGlobalNokeListener.onError(null, NokeMobileError.ERROR_BLUETOOTH_DISABLED, "Bluetooth is disabled");
