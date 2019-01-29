@@ -38,6 +38,8 @@ public interface NokeServiceListener  {
 
     void onBluetoothStatusChanged(int bluetoothStatus);
 
+    void onLocationStatusChanged(int locationStatus);
+
     void onError(NokeDevice noke, int error, String message);
 
 }
