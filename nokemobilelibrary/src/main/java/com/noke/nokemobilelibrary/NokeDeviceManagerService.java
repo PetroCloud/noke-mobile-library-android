@@ -400,7 +400,7 @@ public class NokeDeviceManagerService extends Service {
             // Register the listener with the Location Manager to receive location updates
             // minTime:    minimum time interval between location updates (in milliseconds).
             // minDistance:    minimum distance between location updates (in meters).
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, mLocationListener);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 5, mLocationListener);
         }
         return isLocationGpsProviderEnabled();
     }
