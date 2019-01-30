@@ -379,9 +379,6 @@ public class NokeDeviceManagerService extends Service {
                 public void onLocationChanged(Location location) {
                 }
 
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-                }
-
                 public void onProviderEnabled(String provider) {
                 }
 
