@@ -363,7 +363,7 @@ public class NokeDeviceManagerService extends Service {
         return mBluetoothAdapter != null;
     }
 
-    private void initializeLocation() {
+    private boolean initializeLocation() {
         if (mLocationManager == null) {
             mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             if (mLocationManager == null) {
@@ -386,6 +386,7 @@ public class NokeDeviceManagerService extends Service {
                 }
             };
         }
+        return true;
     }
 
     /**
