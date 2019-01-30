@@ -200,12 +200,7 @@ public class MainActivity extends AppCompatActivity implements DemoWebClient.Dem
         }
 
         @Override
-        public void onProviderEnabled() {
-
-        }
-
-        @Override
-        public void onProviderDisabled(int locationStatus) {
+        public void onLocationStatusChanged(boolean enabled) {
 
         }
 

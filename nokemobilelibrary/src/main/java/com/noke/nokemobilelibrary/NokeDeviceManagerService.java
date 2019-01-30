@@ -379,15 +379,13 @@ public class NokeDeviceManagerService extends Service {
                 }
 
                 public void onProviderEnabled(String provider) {
-                    mGlobalNokeListener.onProviderEnabled();
+                    mGlobalNokeListener.onLocationStatusChanged(true);
                 }
 
                 public void onProviderDisabled(String provider) {
-                    mGlobalNokeListener.onProviderDisabled();
+                    mGlobalNokeListener.onLocationStatusChanged(false);
                 }
             };
-
-            mLocationManager.addGpsStatusListener(this);
 
             // Register the listener with the Location Manager to receive location updates
             // minTime:    minimum time interval between location updates (in milliseconds).

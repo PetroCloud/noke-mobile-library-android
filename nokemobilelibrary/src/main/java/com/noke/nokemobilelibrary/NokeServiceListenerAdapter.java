@@ -67,12 +67,7 @@ public class NokeServiceListenerAdapter implements NokeServiceListener{
     }
 
     @Override
-    public void onProviderEnabled() {
-        //empty default implementation
-    }
-
-    @Override
-    public void onProviderDisabled() {
+    public void onLocationStatusChanged(boolean enabled) {
         //empty default implementation
     }
 
