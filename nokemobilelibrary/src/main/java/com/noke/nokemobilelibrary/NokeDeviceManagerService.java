@@ -379,11 +379,13 @@ public class NokeDeviceManagerService extends Service {
                 }
 
                 public void onProviderEnabled(String provider) {
-                    mGlobalNokeListener.onLocationStatusChanged(true);
+                    Boolean enabled = true;
+                    mGlobalNokeListener.onLocationStatusChanged(enabled);
                 }
 
                 public void onProviderDisabled(String provider) {
-                    mGlobalNokeListener.onLocationStatusChanged(false);
+                    Boolean enabled = false;
+                    mGlobalNokeListener.onLocationStatusChanged(enabled);
                 }
             };
 

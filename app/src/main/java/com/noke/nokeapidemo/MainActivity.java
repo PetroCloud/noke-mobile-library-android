@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements DemoWebClient.Dem
         }
 
         @Override
-        public void onLocationStatusChanged(boolean enabled) {
+        public void onLocationStatusChanged(Boolean enabled) {
 
         }
 
