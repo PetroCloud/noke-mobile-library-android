@@ -25,6 +25,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.Location;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
@@ -374,7 +375,7 @@ public class NokeDeviceManagerService extends Service {
                 public void onStatusChanged(String provider, int status, Bundle extras) {
                     mGlobalNokeListener.onLocationStatusChanged(status);
                 }
-                
+
                 public void onLocationChanged(Location location) {
                 }
 
