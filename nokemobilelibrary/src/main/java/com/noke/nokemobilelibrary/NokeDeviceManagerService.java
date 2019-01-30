@@ -373,7 +373,6 @@ public class NokeDeviceManagerService extends Service {
             // Define a listener that responds to location updates
             mLocationListener = new LocationListener() {
                 public void onStatusChanged(String provider, int status, Bundle extras) {
-                    mGlobalNokeListener.onLocationStatusChanged(status);
                 }
 
                 public void onLocationChanged(Location location) {
