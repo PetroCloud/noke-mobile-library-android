@@ -38,7 +38,9 @@ public interface NokeServiceListener  {
 
     void onBluetoothStatusChanged(int bluetoothStatus);
 
-    void onLocationStatusChanged(int locationStatus);
+    void onProviderEnabled();
+
+    void onProviderDisabled();
 
     void onError(NokeDevice noke, int error, String message);
 
